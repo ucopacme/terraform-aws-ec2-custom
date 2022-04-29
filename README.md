@@ -16,7 +16,7 @@ The module will create:
 
 
 ## Usage
-Create terragrunt.hcl config file, copy/past the following configuration.
+1. Create main.tf config file, copy/past the following configuration.
 
 ## Operating system selection
 
@@ -47,37 +47,14 @@ Create terragrunt.hcl config file, copy/past the following configuration.
 
 # make sure you deploy the security group before creating ec2 instance, ec2 instance depends on the security group.
 
-data "terraform_remote_state" "vpc-out-put" {
-  backend = "remote"
-
-  config = {
-    hostname = "scalr.io" # enter the ucop scalr hostname
-    organization = "Organization id" # make sure to update this with scalr environment organization ID
-    workspaces = {
-      name = "workspace name" # enter the work space name
-    }
-  }
-}
-
-data "terraform_remote_state" "security-group" {
-  backend = "remote"
-
-  config = {
-    hostname = "scalr.io" enter the ucop scalr hostname
-    organization = "Organization id" # make sure to update this with scalr environment organization ID
-    workspaces = {
-      name = "security-group" enter the the work space name
-    }
-  }
-}
 
 module "ec2" {
   source = "git::https://git@github.com/ucopacme/terraform-aws-ec2-custom.git//?ref=v0.0.2"
   enabled                = true       # change it to false to destory the ec2 instance
   os                     = "ami-id"   # List of os(amazon,amazon2,centos7,centos8,rhel6,rhel7,rhel8,ubuntu1804,ubuntu1810,ubuntu1904,windows2019,windows2016,windows2012r2,customwin,customlinux)
   instance_type          = "t3a.large" # Default type is t2.micro
-  subnet_id              = data.terraform_remote_state.vpc-tes-prod-vpc.outputs.private_subnet_ids[0]
-  vpc_security_group_ids = [data.terraform_remote_state.security-group-prod-web-sg.outputs.id]
+  subnet_id              = "subnet_id"
+  vpc_security_group_ids = "security_group_id"
   key_name               = "xxx" # enter the key name
   root_volume_size       = 100    # Default size is 100GB
   root_volume_encryption = true  # Default is true, Change it to False to create unencrypted root volume
@@ -101,3 +78,29 @@ module "ec2" {
     "ucop:owner"       = "xxx"
   }
 }
+
+
+##
+2. Create outputs.tf config file, copy/past the following configuration.
+
+output "instance_name" {
+description = "The tag name for this instance"
+value = var.tags.Name
+}
+output "instance_id" {
+  description = "Instance ID"
+  value       = join("", aws_instance.this.*.id)
+}
+output "instance_arn" {
+  description = "Instance ID"
+  value       = join("", aws_instance.this.*.arn)
+}
+output "instance_public_ip" {
+  description = "Instance ip"
+  value       = join("", aws_instance.this.*.public_ip)
+}
+output "instance_private_ip" {
+  description = "Instance ip"
+  value       = join("", aws_instance.this.*.private_ip)
+}
+
