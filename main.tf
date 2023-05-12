@@ -24,6 +24,10 @@ resource "aws_instance" "this" {
   vpc_security_group_ids      = var.vpc_security_group_ids
   key_name                    = var.key_name
   user_data                   = var.user_data
+  network_interface {
+    network_interface_id  = var.network_interface_id
+    device_index          = 0
+  }
   
 
   root_block_device {
