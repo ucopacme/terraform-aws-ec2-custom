@@ -9,11 +9,11 @@ variable "region" {
   default     = "us-west-2"
 }
 
-variable "associate_public_ip_address" {
-  default     = false
-  description = "(Optional) Associate a public ip address with an instance in a VPC. Boolean value."
-  type        = bool
-}
+#variable "associate_public_ip_address" {
+ # default     = false
+  #description = "(Optional) Associate a public ip address with an instance in a VPC. Boolean value."
+  #type        = bool
+#}
 variable "network_interface_id" {
   description = "network_interface_id"
   type        = string
@@ -25,10 +25,6 @@ variable "enabled_eip" {
   type        = bool
 }
 
-# variable "desc_sg" {
-#   description = "security group description"
-#   type        = string
-# }
 
 variable "enabled" {
   type        = string
@@ -66,17 +62,11 @@ variable "enabled_ebs_volume5" {
   description = "Set to `false` to prevent the module from creating any resources"
   default     = false
 }
-
-# variable "enable_ebs_volume1_attachment" {
-#   type        = bool
-#   description = "Set to `false` to prevent the module from creating any resources"
-#   default     = false
-# }
-# variable "enable_ebs_volume2_attachment" {
-#   type        = bool
-#   description = "Set to `false` to prevent the module from creating any resources"
-#   default     = false
-# }
+variable "enabled_ebs_volume6" {
+  type        = bool
+  description = "Set to `false` to prevent the module from creating any resources"
+  default     = false
+}
 
 
 variable "instance_type" {
@@ -109,6 +99,11 @@ variable "vpc_id" {
   default     = ""
 }
 
+variable "private_ips_count" {
+  type        = number
+  description = "Size of the root volume in gigabytes"
+  default     = 0
+}
 
 variable "root_volume_size" {
   type        = number
@@ -137,6 +132,11 @@ variable "ebs_volume4_size" {
   default     = null
 }
 variable "ebs_volume5_size" {
+  type        = number
+  description = "size of ebs volume"
+  default     = null
+}
+variable "ebs_volume6_size" {
   type        = number
   description = "size of ebs volume"
   default     = null
@@ -201,10 +201,3 @@ variable "os" {
   description = "The Os reference to search for"
   default     = ""
 }
-
-
-
-
-
-
-

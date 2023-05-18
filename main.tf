@@ -2,31 +2,26 @@ locals {
   enabled = var.enabled == "true"
 }
 
-#provider "aws" {
- # region     = var.region
-#}
-
-
 
 # resource block for ec2 #
 resource "aws_instance" "this" {
   count                       = local.enabled ? 1 : 0
   # ami                         = data.aws_ami.search.id
   ami                         = var.os
-  associate_public_ip_address = var.associate_public_ip_address
+  #associate_public_ip_address = var.associate_public_ip_address
   disable_api_termination     = var.disable_api_termination
   ebs_optimized               = var.ebs_optimized
   iam_instance_profile        = var.instance_profile
   instance_type               = var.instance_type
   monitoring                  = var.monitoring
-  subnet_id                   = var.subnet_id
+  #subnet_id                   = var.subnet_id
   tags                        = var.tags
-  vpc_security_group_ids      = var.vpc_security_group_ids
+  #vpc_security_group_ids      = var.vpc_security_group_ids
   key_name                    = var.key_name
   user_data                   = var.user_data
   network_interface {
-    network_interface_id  = var.network_interface_id
-    device_index          = 1
+    network_interface_id  = aws_network_interface.this.id
+    device_index          = 0
   }
   
 
@@ -49,6 +44,15 @@ resource "aws_instance" "this" {
 resource "aws_eip" "this" {
   count    = var.enabled_eip ? 1 : 0
   vpc      = true
+  tags     = var.tags
+}
+
+# network interface
+resource "aws_network_interface" "this" {
+  subnet_id         = var.subnet_id
+  private_ips_count = var.private_ips_count
+  security_groups = var.vpc_security_group_ids
+  #   private_ips = ["10.10.130.180"]
   tags     = var.tags
 }
 
@@ -176,3 +180,24 @@ resource "aws_volume_attachment" "attachment5" {
   }
 }
 
+resource "aws_ebs_volume" "vol6" {
+  count             = var.enabled_ebs_volume6 ? 1 : 0
+  size              = var.ebs_volume6_size
+  type              = var.volume_type
+  availability_zone = aws_instance.this.*.availability_zone[0]
+  tags                        = var.tags
+  lifecycle {
+    ignore_changes = [availability_zone]
+  }
+
+}
+
+resource "aws_volume_attachment" "attachment6" {
+  count       = var.enabled_ebs_volume6 ? 1 : 0
+  device_name = "/dev/sdl"
+  volume_id   = aws_ebs_volume.vol6.*.id[0]
+  instance_id = aws_instance.this.*.id[0]
+  lifecycle {
+    ignore_changes = [instance_id,volume_id]
+  }
+}
