@@ -50,31 +50,32 @@ The module will create:
 
 module "ec2" {
   source = "git::https://git@github.com/ucopacme/terraform-aws-ec2-custom.git//?ref=v0.0.2"
-  enabled                = true       # change it to false to destory the ec2 instance
-  os                     = "ami-id"   # List of os(amazon,amazon2,centos7,centos8,rhel6,rhel7,rhel8,ubuntu1804,ubuntu1810,ubuntu1904,windows2019,windows2016,windows2012r2,customwin,customlinux)
-  instance_type          = "t3a.large" # Default type is t2.micro
-  subnet_id              = "subnet_id"
-  vpc_security_group_ids = "security_group_id"
-  key_name               = "xxx" # enter the key name
-  root_volume_size       = 100    # Default size is 100GB
-  root_volume_encryption = true  # Default is true, Change it to False to create unencrypted root volume
-  enabled_eip            = false # Default is false ,chnage it to true to add EIP
-  enabled_ebs_volume1    = false # Default is false, change it to true to add ebs volume 1 (device_name = "/dev/sdh")
-  enabled_ebs_volume2    = false  # Default is false, change it to true to add ebs volume 2 (device_name = "/dev/sdf")
-  ebs_volume2_size       = 10    # Default null
-  enabled_ebs_volume3    = false  # Default is false, change it to true to add ebs volume 3 (device_name = "/dev/sdj")
-  ebs_volume3_size       = 10    # Default null
-  enabled_ebs_volume4    = false  # Default is false, change it to true to add ebs volume 4 (device_name = "/dev/sdi")
-  ebs_volume4_size       = 10    # Default null
-  enabled_ebs_volume5    = false  # Default is false, change it to true to add ebs volume 5 (device_name = "/dev/sdk")
-  ebs_volume5_size       = 10    # Default null
+  enabled                = true               # change it to false to destory the ec2 instance
+  os                     = "ami-id"           # List of os(amazon,amazon2,centos7,centos8,rhel6,rhel7,rhel8,ubuntu1804,ubuntu1810,ubuntu1904,windows2019,windows2016,windows2012r2,customwin,customlinux)
+  instance_type          = "t3a.large"        # Default type is t2.micro
+  subnet_id              = "subnet_id"        # Subnet_id
+  private_ips_count      = 2                  # Number of secondray private IPs
+  vpc_security_group_ids = "security_group"   # Security group id
+  key_name               = "x"                # enter the key name
+  root_volume_size       = 100                # Default size is 100GB
+  root_volume_encryption = true               # Default is true, Change it to False to create unencrypted root volume
+  enabled_eip            = false              # Default is false ,chnage it to true to add EIP
+  enabled_ebs_volume1    = false              # Default is false, change it to true to add ebs volume 1 (device_name = "/dev/sdh")
+  enabled_ebs_volume2    = false              # Default is false, change it to true to add ebs volume 2 (device_name = "/dev/sdf")
+  ebs_volume2_size       = 10                 # Default null
+  enabled_ebs_volume3    = false              # Default is false, change it to true to add ebs volume 3 (device_name = "/dev/sdj")
+  ebs_volume3_size       = 10                 # Default null
+  enabled_ebs_volume4    = false              # Default is false, change it to true to add ebs volume 4 (device_name = "/dev/sdi")
+  ebs_volume4_size       = 10                 # Default null
+  enabled_ebs_volume5    = false              # Default is false, change it to true to add ebs volume 5 (device_name = "/dev/sdk")
+  ebs_volume5_size       = 10                 # Default null
   tags = {
-    "ucop:application" = "xxx"
+    "ucop:application" = "x"
     "ucop:createdBy"   = "terraform"
-    "ucop:environment"  = "xxx"
-    "ucop:group"       = "xxx"
+    "ucop:environment"  = "x"
+    "ucop:group"       = "x"
     "ucop:source"      = join("/", ["https://github.com/ucopacme/ucop-terraform-deployment/terraform/xxx"])
-    "Name"             = "xxx"
+    "Name"             = "x"
     "ucop:owner"       = "xxx"
   }
 }
