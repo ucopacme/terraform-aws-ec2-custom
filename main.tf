@@ -23,18 +23,23 @@ resource "aws_instance" "this" {
     network_interface_id  = aws_network_interface.this.id
     device_index          = 0
   }
-  
+
 
   root_block_device {
     volume_size = var.root_volume_size
     volume_type = var.volume_type
     encrypted   = var.root_volume_encryption
     tags        = var.tags
-
   }
   lifecycle {
     # ignore_changes = [ami,ebs_block_device,root_block_device,associate_public_ip_address]
     ignore_changes = [ami,ebs_block_device,associate_public_ip_address]
+  }
+  metadata_options {
+    http_endpoint               = "enabled"
+    http_put_response_hop_limit = 1
+    http_tokens                 = var.metadata_http_tokens
+    instance_metadata_tags      = "disabled"
   }
 
 }
@@ -43,7 +48,7 @@ resource "aws_instance" "this" {
 # resource block for eip #
 resource "aws_eip" "this" {
   count    = var.enabled_eip ? 1 : 0
-  vpc      = true
+#  domain   = "vpc"
   tags     = var.tags
 }
 
@@ -61,7 +66,6 @@ resource "aws_eip_association" "eip_assoc" {
   count    = var.enabled_eip ? 1 : 0
   instance_id   = aws_instance.this.*.id[0]
   allocation_id = aws_eip.this.*.id[0]
-  
 }
 # resource block for ebs volumes #
 resource "aws_ebs_volume" "this" {
@@ -73,7 +77,6 @@ resource "aws_ebs_volume" "this" {
   lifecycle {
     ignore_changes = [availability_zone]
   }
-
 }
 
 resource "aws_volume_attachment" "this" {
@@ -84,9 +87,7 @@ resource "aws_volume_attachment" "this" {
   lifecycle {
     ignore_changes = [instance_id,volume_id]
   }
-
 }
-
 
 resource "aws_ebs_volume" "vol2" {
   count             = var.enabled_ebs_volume2 ? 1 : 0
@@ -97,7 +98,6 @@ resource "aws_ebs_volume" "vol2" {
   lifecycle {
     ignore_changes = [availability_zone]
   }
-
 }
 
 resource "aws_volume_attachment" "attachment2" {
@@ -108,7 +108,6 @@ resource "aws_volume_attachment" "attachment2" {
   lifecycle {
     ignore_changes = [instance_id,volume_id]
   }
-  
 }
 
 resource "aws_ebs_volume" "vol3" {
@@ -120,7 +119,6 @@ resource "aws_ebs_volume" "vol3" {
   lifecycle {
     ignore_changes = [availability_zone]
   }
-
 }
 
 resource "aws_volume_attachment" "attachment3" {
@@ -131,7 +129,6 @@ resource "aws_volume_attachment" "attachment3" {
   lifecycle {
     ignore_changes = [instance_id,volume_id]
   }
-  
 }
 
 resource "aws_ebs_volume" "vol4" {
@@ -143,8 +140,6 @@ resource "aws_ebs_volume" "vol4" {
   lifecycle {
     ignore_changes = [availability_zone]
   }
- 
-
 }
 
 resource "aws_volume_attachment" "attachment4" {
@@ -155,7 +150,6 @@ resource "aws_volume_attachment" "attachment4" {
   lifecycle {
     ignore_changes = [instance_id,volume_id]
   }
-  
 }
 
 resource "aws_ebs_volume" "vol5" {
@@ -167,7 +161,6 @@ resource "aws_ebs_volume" "vol5" {
   lifecycle {
     ignore_changes = [availability_zone]
   }
-
 }
 
 resource "aws_volume_attachment" "attachment5" {
@@ -189,7 +182,6 @@ resource "aws_ebs_volume" "vol6" {
   lifecycle {
     ignore_changes = [availability_zone]
   }
-
 }
 
 resource "aws_volume_attachment" "attachment6" {
