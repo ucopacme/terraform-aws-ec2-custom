@@ -49,7 +49,7 @@ The module will create:
 
 
 module "ec2" {
-  source = "git::https://git@github.com/ucopacme/terraform-aws-ec2-custom.git//?ref=v0.0.2"
+  source = "git::https://git@github.com/ucopacme/terraform-aws-ec2-custom.git//?ref=v0.0.6"
   enabled                = true               # change it to false to destory the ec2 instance
   os                     = "ami-id"           # List of os(amazon,amazon2,centos7,centos8,rhel6,rhel7,rhel8,ubuntu1804,ubuntu1810,ubuntu1904,windows2019,windows2016,windows2012r2,customwin,customlinux)
   instance_type          = "t3a.large"        # Default type is t2.micro
