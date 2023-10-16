@@ -111,7 +111,7 @@ resource "aws_volume_attachment" "attachment2" {
 }
 
 resource "aws_ebs_volume" "vol3" {
-  count             = var.enabled_ebs_volume2 ? 1 : 0
+  count             = var.enabled_ebs_volume3 ? 1 : 0
   size              = var.ebs_volume3_size
   type              = var.volume_type
   availability_zone = aws_instance.this.*.availability_zone[0]
