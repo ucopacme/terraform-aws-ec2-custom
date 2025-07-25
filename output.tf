@@ -24,3 +24,29 @@ output "instance_private_ip" {
 #   description = "The ID of the VPC"
 #   value       = module.ec2.instance_id
 # }
+
+output "ebs_vol1" {
+  description = "volume id"
+  value       = join("",aws_ebs_volume.this.*.id)
+}
+
+output "ebs_vol2" {
+  description = "volume id"
+  value       = join("", aws_ebs_volume.vol2.*.id)
+}
+output "ebs_vol3" {
+  description = "volume id"
+  value       = join("",aws_ebs_volume.vol3.*.id)
+}
+output "ebs_vol4" {
+  description = "volume id"
+  value       = join("", aws_ebs_volume.vol4.*.id)
+}
+output "ebs_vol5" {
+  description = "volume id"
+  value       = join("", aws_ebs_volume.vol5.*.id)
+}
+output "ebs_vol6" {
+  description = "volume id"
+  value       = join("", aws_ebs_volume.vol6.*.id)
+}
